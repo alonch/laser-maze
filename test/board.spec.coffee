@@ -3,7 +3,7 @@ board = require "../src/board"
 describe "board ", ->
   game = 0
   beforeEach ->
-    game = new board.Board 9
+    game = new board.Game 9
 
   it "construction", ->
     expect(game.getSize()).toBe 9

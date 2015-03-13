@@ -8,7 +8,7 @@
     var game;
     game = 0;
     beforeEach(function() {
-      return game = new board.Board(9);
+      return game = new board.Game(9);
     });
     it("construction", function() {
       return expect(game.getSize()).toBe(9);

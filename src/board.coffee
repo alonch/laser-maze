@@ -1,16 +1,44 @@
-class Board
-  constructor: (@size) ->
-    @board = @generateBoard()
+class Game
+  constructor: (size) ->
+    @board = new Board(size)
     @players = []
-  generateBoard: -> (false for i in [1..@size] for j in [1..@size])
-  getSize: -> @size
+
+  getSize: -> @board.size
   addPlayer: (player) ->
     @players.push(player)
-    player.sight = @generateSight(player.pos)
+    player.sight = @board.generateSight(player.pos)
+
+  getPlayers: -> @players
+  openBlocks:(line, start=0, end=@getSize()-1) ->
+    board = @board.maze
+    xAxis = (i, j) -> board[i][j] = true
+    yAxis = (i, j) -> xAxis j, i
+    update =  if line.axis is "x" then xAxis else yAxis
+    update i, line.pos for i in [start .. end]
+  isBlockOpen: (x, y)-> @board.maze[x][y]
+  getPlayer: (name) ->
+    for player in @players
+      if player.name is name
+        return player
+  movePlayer: (name, dir) ->
+    speed = if dir in ["up", "right"] then 1 else -1
+    player = @getPlayer(name)
+    if dir in ["up", "down"]
+      player.pos.y += speed
+    else
+      player.pos.x += speed
+
+class Board
+  constructor:(@size) ->
+    @maze = @generateBoard()
+
+  generateBoard: ->
+    (false for i in [1..@size] for j in [1..@size])
+
   generateSight: ({x, y}) ->
     sight = @generateBoard()
-    board = @board
-    size = @getSize()-1
+    maze = @maze
+    size = @size-1
 
     processDirection = (start, set, get) ->
       processFor start, size, set, get
@@ -24,33 +52,13 @@ class Board
 
     processDirection x,
       (i, value) -> sight[i][y] = value,
-      (i) -> board[i][y]
+      (i) -> maze[i][y]
 
     processDirection y,
       (i, value) -> sight[x][i] = value,
-      (i) -> board[x][i]
+      (i) -> maze[x][i]
 
     return sight
-  getPlayers: -> @players
-  openBlocks:(line, start=0, end=@getSize()-1) ->
-    board = @board
-    xAxis = (i, j) -> board[i][j] = true
-    yAxis = (i, j) -> xAxis j, i
-    update =  if line.axis is "x" then xAxis else yAxis
-    update i, line.pos for i in [start .. end]
-  isBlockOpen: (x, y)-> @board[x][y]
-  getPlayer: (name) ->
-    for player in @players
-      if player.name is name
-        return player
-  movePlayer: (name, dir) ->
-    speed = if dir in ["up", "right"] then 1 else -1
-    player = @getPlayer(name)
-    if dir in ["up", "down"]
-      player.pos.y += speed
-    else
-      player.pos.x += speed
-
-exports.Board = Board
+exports.Game = Game
 
 
