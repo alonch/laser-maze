@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+<testsuite name="board" errors="0" tests="3" failures="0" time="0.016" timestamp="2015-03-13T03:16:15">
+  <testcase classname="board" name="create a board 9x9" time="0.012"></testcase>
+  <testcase classname="board" name="add player" time="0.001"></testcase>
+  <testcase classname="board" name="player is save correctly" time="0"></testcase>
+</testsuite>
+</testsuites>

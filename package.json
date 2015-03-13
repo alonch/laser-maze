@@ -1,0 +1,26 @@
+{
+  "name": "Laser-Maze",
+  "version": "1.0.0",
+  "description": "shooting multiplayer game",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.12.2",
+    "istanbul": "^0.3.7",
+    "jasmine-node": "^1.14.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "pre": "coffee --compile",
+    "test": "node_modules/jasmine-node/bin/jasmine-node --verbose --junitreport --noColor test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alonch/laser-maze.git"
+  },
+  "author": "alonch <alonchb@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alonch/laser-maze/issues"
+  },
+  "homepage": "https://github.com/alonch/laser-maze"
+}
