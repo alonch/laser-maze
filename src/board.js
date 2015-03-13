@@ -4,41 +4,80 @@
 
   Board = (function() {
     function Board(size) {
-      var i, j;
       this.size = size;
-      this.board = (function() {
-        var k, ref, results;
-        results = [];
-        for (j = k = 1, ref = this.size; 1 <= ref ? k <= ref : k >= ref; j = 1 <= ref ? ++k : --k) {
-          results.push((function() {
-            var l, ref1, results1;
-            results1 = [];
-            for (i = l = 1, ref1 = this.size; 1 <= ref1 ? l <= ref1 : l >= ref1; i = 1 <= ref1 ? ++l : --l) {
-              results1.push(false);
-            }
-            return results1;
-          }).call(this));
-        }
-        return results;
-      }).call(this);
+      this.board = this.generateBoard();
       this.players = [];
     }
+
+    Board.prototype.generateBoard = function() {
+      var i, j, k, ref, results;
+      results = [];
+      for (j = k = 1, ref = this.size; 1 <= ref ? k <= ref : k >= ref; j = 1 <= ref ? ++k : --k) {
+        results.push((function() {
+          var l, ref1, results1;
+          results1 = [];
+          for (i = l = 1, ref1 = this.size; 1 <= ref1 ? l <= ref1 : l >= ref1; i = 1 <= ref1 ? ++l : --l) {
+            results1.push(false);
+          }
+          return results1;
+        }).call(this));
+      }
+      return results;
+    };
 
     Board.prototype.getSize = function() {
       return this.size;
     };
 
     Board.prototype.addPlayer = function(player) {
-      return this.players.push(player);
+      this.players.push(player);
+      return player.sight = this.generateSight(player.pos);
+    };
+
+    Board.prototype.generateSight = function(arg) {
+      var i, k, l, len, m, n, ref, ref1, ref2, ref3, ref4, ref5, sight, x, y;
+      x = arg.x, y = arg.y;
+      sight = this.generateBoard();
+      len = Math.max(x, this.getSize() - x, y, this.getSize() - y);
+      for (i = k = ref = x, ref1 = this.getSize() - 1; ref <= ref1 ? k <= ref1 : k >= ref1; i = ref <= ref1 ? ++k : --k) {
+        if (!this.board[i][y]) {
+          break;
+        }
+        sight[i][y] = this.board[i][y];
+      }
+      for (i = l = ref2 = y, ref3 = this.getSize() - 1; ref2 <= ref3 ? l <= ref3 : l >= ref3; i = ref2 <= ref3 ? ++l : --l) {
+        if (!this.board[x][i]) {
+          break;
+        }
+        sight[x][i] = this.board[x][i];
+      }
+      for (i = m = ref4 = x; ref4 <= 0 ? m <= 0 : m >= 0; i = ref4 <= 0 ? ++m : --m) {
+        if (!this.board[i][y]) {
+          break;
+        }
+        sight[i][y] = this.board[i][y];
+      }
+      for (i = n = ref5 = x; ref5 <= 0 ? n <= 0 : n >= 0; i = ref5 <= 0 ? ++n : --n) {
+        if (!this.board[x][i]) {
+          break;
+        }
+        sight[x][i] = this.board[x][i];
+      }
+      return sight;
     };
 
     Board.prototype.getPlayers = function() {
       return this.players;
     };
 
-    Board.prototype.openBlocks = function(arg) {
-      var board, end, i, k, line, ref, ref1, results, start, update, xAxis, yAxis;
-      start = arg.start, end = arg.end, line = arg.line;
+    Board.prototype.openBlocks = function(line, start, end) {
+      var board, i, k, ref, ref1, results, update, xAxis, yAxis;
+      if (start == null) {
+        start = 0;
+      }
+      if (end == null) {
+        end = this.getSize() - 1;
+      }
       board = this.board;
       xAxis = function(i, j) {
         return board[i][j] = true;
@@ -59,9 +98,9 @@
     };
 
     Board.prototype.getPlayer = function(name) {
-      var k, len, player, ref;
+      var k, len1, player, ref;
       ref = this.players;
-      for (k = 0, len = ref.length; k < len; k++) {
+      for (k = 0, len1 = ref.length; k < len1; k++) {
         player = ref[k];
         if (player.name === name) {
           return player;
