@@ -3,8 +3,8 @@
   var Board;
 
   Board = (function() {
-    function Board(size) {
-      this.size = size;
+    function Board(size1) {
+      this.size = size1;
       this.board = this.generateBoard();
       this.players = [];
     }
@@ -35,34 +35,34 @@
     };
 
     Board.prototype.generateSight = function(arg) {
-      var i, k, l, len, m, n, ref, ref1, ref2, ref3, ref4, ref5, sight, x, y;
+      var board, processDirection, processFor, sight, size, x, y;
       x = arg.x, y = arg.y;
       sight = this.generateBoard();
-      len = Math.max(x, this.getSize() - x, y, this.getSize() - y);
-      for (i = k = ref = x, ref1 = this.getSize() - 1; ref <= ref1 ? k <= ref1 : k >= ref1; i = ref <= ref1 ? ++k : --k) {
-        if (!this.board[i][y]) {
-          break;
+      board = this.board;
+      size = this.getSize() - 1;
+      processDirection = function(start, set, get) {
+        processFor(start, size, set, get);
+        return processFor(start, 0, set, get);
+      };
+      processFor = function(start, end, set, get) {
+        var i, k, ref, ref1;
+        for (i = k = ref = start, ref1 = end; ref <= ref1 ? k <= ref1 : k >= ref1; i = ref <= ref1 ? ++k : --k) {
+          if (!get(i)) {
+            return;
+          }
+          set(i, get(i));
         }
-        sight[i][y] = this.board[i][y];
-      }
-      for (i = l = ref2 = y, ref3 = this.getSize() - 1; ref2 <= ref3 ? l <= ref3 : l >= ref3; i = ref2 <= ref3 ? ++l : --l) {
-        if (!this.board[x][i]) {
-          break;
-        }
-        sight[x][i] = this.board[x][i];
-      }
-      for (i = m = ref4 = x; ref4 <= 0 ? m <= 0 : m >= 0; i = ref4 <= 0 ? ++m : --m) {
-        if (!this.board[i][y]) {
-          break;
-        }
-        sight[i][y] = this.board[i][y];
-      }
-      for (i = n = ref5 = x; ref5 <= 0 ? n <= 0 : n >= 0; i = ref5 <= 0 ? ++n : --n) {
-        if (!this.board[x][i]) {
-          break;
-        }
-        sight[x][i] = this.board[x][i];
-      }
+      };
+      processDirection(x, function(i, value) {
+        return sight[i][y] = value;
+      }, function(i) {
+        return board[i][y];
+      });
+      processDirection(y, function(i, value) {
+        return sight[x][i] = value;
+      }, function(i) {
+        return board[x][i];
+      });
       return sight;
     };
 
@@ -98,9 +98,9 @@
     };
 
     Board.prototype.getPlayer = function(name) {
-      var k, len1, player, ref;
+      var k, len, player, ref;
       ref = this.players;
-      for (k = 0, len1 = ref.length; k < len1; k++) {
+      for (k = 0, len = ref.length; k < len; k++) {
         player = ref[k];
         if (player.name === name) {
           return player;

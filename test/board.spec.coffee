@@ -84,7 +84,6 @@ describe "board ", ->
         game.openBlocks line=pos:player.pos.x, axis:"y", start=0, end=1
         game.openBlocks line=pos:player.pos.y, axis:"x"
         game.addPlayer player
-        console.log player.sight
         for i in [0..game.getSize()-1]
           cell = player.sight[player.pos.x][i]
           if player.pos.y <= i

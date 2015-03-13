@@ -9,23 +9,27 @@ class Board
     player.sight = @generateSight(player.pos)
   generateSight: ({x, y}) ->
     sight = @generateBoard()
-    len = Math.max(x, @getSize()-x, y, @getSize()-y)
-    for i in [x..@getSize()-1]
-      if not @board[i][y]
-        break
-      sight[i][y] = @board[i][y]
-    for i in [y..@getSize()-1]
-      if not @board[x][i]
-        break
-      sight[x][i] = @board[x][i]
-    for i in [x..0]
-      if not @board[i][y]
-        break
-      sight[i][y] = @board[i][y]
-    for i in [x..0]
-      if not @board[x][i]
-        break
-      sight[x][i] = @board[x][i]
+    board = @board
+    size = @getSize()-1
+
+    processDirection = (start, set, get) ->
+      processFor start, size, set, get
+      processFor start, 0, set, get
+
+    processFor = (start, end, set, get) ->
+      for i in [start..end]
+        if not get(i)
+          return
+        set i, get(i)
+
+    processDirection x,
+      (i, value) -> sight[i][y] = value,
+      (i) -> board[i][y]
+
+    processDirection y,
+      (i, value) -> sight[x][i] = value,
+      (i) -> board[x][i]
+
     return sight
   getPlayers: -> @players
   openBlocks:(line, start=0, end=@getSize()-1) ->

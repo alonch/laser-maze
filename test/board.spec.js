@@ -139,7 +139,6 @@
             axis: "x"
           });
           game.addPlayer(player);
-          console.log(player.sight);
           results = [];
           for (i = j = 0, ref = game.getSize() - 1; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
             cell = player.sight[player.pos.x][i];
