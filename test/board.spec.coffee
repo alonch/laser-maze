@@ -1,12 +1,50 @@
 board = require "../src/board"
 
-describe "board ", ->
+describe "Board", ->
   game = 0
   beforeEach ->
-    game = new board.Game 9
+    game = new board.Game new board.Board 9
 
   it "construction", ->
     expect(game.getSize()).toBe 9
+
+  describe "blocks behaviors ", ->
+    describe "specified", ->
+      block = 0
+      beforeEach ->
+        block =
+          start:0
+          end:6
+          line:
+            pos:3
+
+      it "in X axis", ->
+        block.line.axis="x"
+        game.openBlocks block.line, block.start, block.end
+        open = game.isBlockOpen(6,3)
+        expect(open).toBeTruthy()
+
+      it "in Y axis", ->
+        block.line.axis="y"
+        game.openBlocks block.line, block.start, block.end
+        open = game.isBlockOpen(3,6)
+        expect(open).toBeTruthy()
+
+    describe "defaults", ->
+      it "in X axis", ->
+        game.openBlocks line= pos:3,axis:"x"
+        open = game.isBlockOpen(6,3)
+        expect(open).toBeTruthy()
+
+      xit "in Y axis", ->
+        game.openBlocks line= pos:3, axis:"y"
+        open = game.isBlockOpen(3,6)
+        expect(open).toBeTruthy()
+
+describe "Game", ->
+  game = null
+  beforeEach ->
+    game = new board.Game new board.Board 9
 
   describe "player", ->
     player = 0
@@ -90,39 +128,5 @@ describe "board ", ->
             expect(cell).toBeTruthy()
           else
             expect(cell).toBeFalsy()
-
-  describe "blocks behaviors ", ->
-    describe "specified", ->
-      block = 0
-      beforeEach ->
-        block =
-          start:0
-          end:6
-          line:
-            pos:3
-
-      it "in X axis", ->
-        block.line.axis="x"
-        game.openBlocks block.line, block.start, block.end
-        open = game.isBlockOpen(6,3)
-        expect(open).toBeTruthy()
-
-      it "in Y axis", ->
-        block.line.axis="y"
-        game.openBlocks block.line, block.start, block.end
-        open = game.isBlockOpen(3,6)
-        expect(open).toBeTruthy()
-
-    describe "defaults", ->
-      it "in X axis", ->
-        game.openBlocks line= pos:3,axis:"x"
-        open = game.isBlockOpen(6,3)
-        expect(open).toBeTruthy()
-
-      xit "in Y axis", ->
-        game.openBlocks line= pos:3, axis:"y"
-        open = game.isBlockOpen(3,6)
-        expect(open).toBeTruthy()
-
 
 

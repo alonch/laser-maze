@@ -3,14 +3,10 @@
   var Board, Game;
 
   Game = (function() {
-    function Game(size) {
-      this.board = new Board(size);
+    function Game(board) {
+      this.board = board;
       this.players = [];
     }
-
-    Game.prototype.getSize = function() {
-      return this.board.size;
-    };
 
     Game.prototype.addPlayer = function(player) {
       this.players.push(player);
@@ -19,33 +15,6 @@
 
     Game.prototype.getPlayers = function() {
       return this.players;
-    };
-
-    Game.prototype.openBlocks = function(line, start, end) {
-      var board, i, k, ref, ref1, results, update, xAxis, yAxis;
-      if (start == null) {
-        start = 0;
-      }
-      if (end == null) {
-        end = this.getSize() - 1;
-      }
-      board = this.board.maze;
-      xAxis = function(i, j) {
-        return board[i][j] = true;
-      };
-      yAxis = function(i, j) {
-        return xAxis(j, i);
-      };
-      update = line.axis === "x" ? xAxis : yAxis;
-      results = [];
-      for (i = k = ref = start, ref1 = end; ref <= ref1 ? k <= ref1 : k >= ref1; i = ref <= ref1 ? ++k : --k) {
-        results.push(update(i, line.pos));
-      }
-      return results;
-    };
-
-    Game.prototype.isBlockOpen = function(x, y) {
-      return this.board.maze[x][y];
     };
 
     Game.prototype.getPlayer = function(name) {
@@ -68,6 +37,18 @@
       } else {
         return player.pos.x += speed;
       }
+    };
+
+    Game.prototype.getSize = function() {
+      return this.board.getSize();
+    };
+
+    Game.prototype.openBlocks = function(line, start, end) {
+      return this.board.openBlocks(line, start, end);
+    };
+
+    Game.prototype.isBlockOpen = function(x, y) {
+      return this.board.isBlockOpen(x, y);
     };
 
     return Game;
@@ -128,10 +109,43 @@
       return sight;
     };
 
+    Board.prototype.getSize = function() {
+      return this.size;
+    };
+
+    Board.prototype.openBlocks = function(line, start, end) {
+      var i, k, maze, ref, ref1, results, update, xAxis, yAxis;
+      if (start == null) {
+        start = 0;
+      }
+      if (end == null) {
+        end = this.getSize() - 1;
+      }
+      maze = this.maze;
+      xAxis = function(i, j) {
+        return maze[i][j] = true;
+      };
+      yAxis = function(i, j) {
+        return xAxis(j, i);
+      };
+      update = line.axis === "x" ? xAxis : yAxis;
+      results = [];
+      for (i = k = ref = start, ref1 = end; ref <= ref1 ? k <= ref1 : k >= ref1; i = ref <= ref1 ? ++k : --k) {
+        results.push(update(i, line.pos));
+      }
+      return results;
+    };
+
+    Board.prototype.isBlockOpen = function(x, y) {
+      return this.maze[x][y];
+    };
+
     return Board;
 
   })();
 
   exports.Game = Game;
+
+  exports.Board = Board;
 
 }).call(this);

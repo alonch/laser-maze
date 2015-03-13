@@ -1,21 +1,13 @@
 class Game
-  constructor: (size) ->
-    @board = new Board(size)
+  constructor: (@board) ->
     @players = []
 
-  getSize: -> @board.size
   addPlayer: (player) ->
     @players.push(player)
     player.sight = @board.generateSight(player.pos)
 
   getPlayers: -> @players
-  openBlocks:(line, start=0, end=@getSize()-1) ->
-    board = @board.maze
-    xAxis = (i, j) -> board[i][j] = true
-    yAxis = (i, j) -> xAxis j, i
-    update =  if line.axis is "x" then xAxis else yAxis
-    update i, line.pos for i in [start .. end]
-  isBlockOpen: (x, y)-> @board.maze[x][y]
+
   getPlayer: (name) ->
     for player in @players
       if player.name is name
@@ -27,6 +19,9 @@ class Game
       player.pos.y += speed
     else
       player.pos.x += speed
+  getSize: -> @board.getSize()
+  openBlocks:(line, start, end) -> @board.openBlocks(line, start, end)
+  isBlockOpen: (x, y)-> @board.isBlockOpen(x, y)
 
 class Board
   constructor:(@size) ->
@@ -59,6 +54,16 @@ class Board
       (i) -> maze[x][i]
 
     return sight
+  getSize: -> @size
+  openBlocks:(line, start=0, end=@getSize()-1) ->
+    maze = @maze
+    xAxis = (i, j) -> maze[i][j] = true
+    yAxis = (i, j) -> xAxis j, i
+    update =  if line.axis is "x" then xAxis else yAxis
+    update i, line.pos for i in [start .. end]
+  isBlockOpen: (x, y)-> @maze[x][y]
+
 exports.Game = Game
+exports.Board = Board
 
 

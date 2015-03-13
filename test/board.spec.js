@@ -4,16 +4,73 @@
 
   board = require("../src/board");
 
-  describe("board ", function() {
+  describe("Board", function() {
     var game;
     game = 0;
     beforeEach(function() {
-      return game = new board.Game(9);
+      return game = new board.Game(new board.Board(9));
     });
     it("construction", function() {
       return expect(game.getSize()).toBe(9);
     });
-    describe("player", function() {
+    return describe("blocks behaviors ", function() {
+      describe("specified", function() {
+        var block;
+        block = 0;
+        beforeEach(function() {
+          return block = {
+            start: 0,
+            end: 6,
+            line: {
+              pos: 3
+            }
+          };
+        });
+        it("in X axis", function() {
+          var open;
+          block.line.axis = "x";
+          game.openBlocks(block.line, block.start, block.end);
+          open = game.isBlockOpen(6, 3);
+          return expect(open).toBeTruthy();
+        });
+        return it("in Y axis", function() {
+          var open;
+          block.line.axis = "y";
+          game.openBlocks(block.line, block.start, block.end);
+          open = game.isBlockOpen(3, 6);
+          return expect(open).toBeTruthy();
+        });
+      });
+      return describe("defaults", function() {
+        it("in X axis", function() {
+          var line, open;
+          game.openBlocks(line = {
+            pos: 3,
+            axis: "x"
+          });
+          open = game.isBlockOpen(6, 3);
+          return expect(open).toBeTruthy();
+        });
+        return xit("in Y axis", function() {
+          var line, open;
+          game.openBlocks(line = {
+            pos: 3,
+            axis: "y"
+          });
+          open = game.isBlockOpen(3, 6);
+          return expect(open).toBeTruthy();
+        });
+      });
+    });
+  });
+
+  describe("Game", function() {
+    var game;
+    game = null;
+    beforeEach(function() {
+      return game = new board.Game(new board.Board(9));
+    });
+    return describe("player", function() {
       var player;
       player = 0;
       beforeEach(function() {
@@ -152,55 +209,8 @@
         });
       });
     });
-    return describe("blocks behaviors ", function() {
-      describe("specified", function() {
-        var block;
-        block = 0;
-        beforeEach(function() {
-          return block = {
-            start: 0,
-            end: 6,
-            line: {
-              pos: 3
-            }
-          };
-        });
-        it("in X axis", function() {
-          var open;
-          block.line.axis = "x";
-          game.openBlocks(block.line, block.start, block.end);
-          open = game.isBlockOpen(6, 3);
-          return expect(open).toBeTruthy();
-        });
-        return it("in Y axis", function() {
-          var open;
-          block.line.axis = "y";
-          game.openBlocks(block.line, block.start, block.end);
-          open = game.isBlockOpen(3, 6);
-          return expect(open).toBeTruthy();
-        });
-      });
-      return describe("defaults", function() {
-        it("in X axis", function() {
-          var line, open;
-          game.openBlocks(line = {
-            pos: 3,
-            axis: "x"
-          });
-          open = game.isBlockOpen(6, 3);
-          return expect(open).toBeTruthy();
-        });
-        return xit("in Y axis", function() {
-          var line, open;
-          game.openBlocks(line = {
-            pos: 3,
-            axis: "y"
-          });
-          open = game.isBlockOpen(3, 6);
-          return expect(open).toBeTruthy();
-        });
-      });
-    });
   });
 
 }).call(this);
+
+//# sourceMappingURL=board.spec.js.map
