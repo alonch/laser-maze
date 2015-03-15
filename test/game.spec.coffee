@@ -27,19 +27,22 @@ describe "Game", ->
       savedPlayer = game.getPlayer(player.name)
       expect(savedPlayer).toEqual player
 
+    it "throw exception if not fond", ->
+      expect(-> game.getPlayer("")).toThrow(Error("Player not fond"))
+
     it "can be saved", ->
       game.addPlayer player
       players = game.getPlayers()
       expect(players[0]).toEqual player
 
     it "can move north", ->
-      board.openBlocks line= pos:3, axis:"y"
+      board.openBlocks line= pos:player.pos.x, axis:"y"
       game.addPlayer player
       game.movePlayer player.name, "up"
       expect(player.pos.y).toBe 4
 
     it "can move west", ->
-      board.openBlocks line= pos:3, axis:"x"
+      board.openBlocks line= pos:player.pos.y, axis:"x"
       game.addPlayer player
       game.movePlayer player.name, "left"
       expect(player.pos.x).toBe 2

@@ -12,6 +12,8 @@ class Game
     for player in @players
       if player.name is name
         return player
+    throw new Error("Player not fond")
+
   movePlayer: (name, dir) ->
     speed = if dir in ["up", "right"] then 1 else -1
     player = @getPlayer(name)
