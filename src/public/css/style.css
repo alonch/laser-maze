@@ -1,0 +1,23 @@
+.row{
+    clear:both;
+}
+.grayBlock, .blackBlock{
+    height: 30px;
+    width: 30px;
+    float:left;
+    border: solid;
+    border-width: 2px;
+}
+
+.grayBlock{
+    background-color: #808080;
+}
+.blackBlock{
+    background-color: #000000;
+}
+
+.person{
+    width: 100%;
+    height: 100%;
+    background-color: #000088;
+}

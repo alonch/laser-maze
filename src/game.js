@@ -26,6 +26,7 @@
           return player;
         }
       }
+      throw new Error("Player not fond");
     };
 
     Game.prototype.movePlayer = function(name, dir) {

@@ -1,0 +1,34 @@
+doctype html
+html(ng-app="laserMaze")
+head(lang="en")
+    meta(charset="UTF-8")
+    title Laser Maze
+    link(rel="styleSheet" href="static/css/style.css")
+
+body(ng-controller='boardController' shortcut)
+    div
+        label
+            b name:
+            label {{ player.name }}
+        br
+        label
+            b pos:
+            label ({{ player.pos.x }},
+            label {{ player.pos.y }})
+            br
+            label {{ keyCode }}
+    div(ng-repeat="row in board track by $index" class="row")
+        div(ng-repeat="cell in row track by $index")
+            .grayBlock(ng-show="cell")
+                .person(ng-show="cell.name")
+            .blackBlock(ng-hide="cell")
+
+
+
+    script(src="static/js/jquery.js")
+    script(src="static/js/angular.js")
+    //script(src="static/js/socket.io.js")
+    //script(src="static/js/bootstrap.min.js")
+    script(src="static/js/app.js")
+
+
