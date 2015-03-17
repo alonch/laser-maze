@@ -2,6 +2,7 @@ express = require('express')
 socket = require('socket.io')
 jade = require('jade')
 app = express()
+app.set('port', (process.env.PORT || 5000));
 http = require('http').Server(app)
 io = socket(http);
 views = []
@@ -13,7 +14,7 @@ app.get '/', (req, res) ->
 app.use('/static', express["static"](__dirname + "/public"));
 app.use('/test', express["static"](__dirname + "/public-test"));
 
-server = app.listen 3000, ->
+server = app.listen app.get('port'), ->
   host = server.address().address
   port = server.address().port
   console.log 'Example app listening at http://%s:%s', host, port

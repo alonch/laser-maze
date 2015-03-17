@@ -10,6 +10,8 @@
 
   app = express();
 
+  app.set('port', process.env.PORT || 5000);
+
   http = require('http').Server(app);
 
   io = socket(http);
@@ -26,7 +28,7 @@
 
   app.use('/test', express["static"](__dirname + "/public-test"));
 
-  server = app.listen(3000, function() {
+  server = app.listen(app.get('port'), function() {
     var host, port;
     host = server.address().address;
     port = server.address().port;

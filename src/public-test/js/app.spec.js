@@ -58,5 +58,3 @@
   });
 
 }).call(this);
-
-//# sourceMappingURL=app.spec.js.map
