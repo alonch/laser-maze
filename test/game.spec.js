@@ -38,6 +38,11 @@
         savedPlayer = game.getPlayer(player.name);
         return expect(savedPlayer).toEqual(player);
       });
+      it("throw exception if not fond", function() {
+        return expect(function() {
+          return game.getPlayer("");
+        }).toThrow(Error("Player not fond"));
+      });
       it("can be saved", function() {
         var players;
         game.addPlayer(player);
@@ -47,7 +52,7 @@
       it("can move north", function() {
         var line;
         board.openBlocks(line = {
-          pos: 3,
+          pos: player.pos.x,
           axis: "y"
         });
         game.addPlayer(player);
@@ -57,7 +62,7 @@
       it("can move west", function() {
         var line;
         board.openBlocks(line = {
-          pos: 3,
+          pos: player.pos.y,
           axis: "x"
         });
         game.addPlayer(player);

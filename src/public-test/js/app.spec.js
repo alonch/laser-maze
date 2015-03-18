@@ -22,7 +22,7 @@
       it("has name", function() {
         return expect($scope.player.name).toBeTruthy();
       });
-      return describe("can move", function() {
+      describe("can move", function() {
         var x, y;
         y = x = null;
         beforeEach(function() {
@@ -41,9 +41,19 @@
           $scope.player.move("down");
           return expect($scope.player.pos.y).toBe(y + 1);
         });
-        return it("left", function() {
+        it("left", function() {
           $scope.player.move("right");
           return expect($scope.player.pos.x).toBe(x + 1);
+        });
+        return it("invalid", function() {
+          return expect(function() {
+            return $scope.player.move("nothing");
+          }).toThrow();
+        });
+      });
+      return describe("capture", function() {
+        return it("arrow up", function() {
+          return $scope.keyPressed();
         });
       });
     });

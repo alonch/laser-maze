@@ -38,6 +38,13 @@ describe 'boardController', ->
         $scope.player.move("right")
         expect($scope.player.pos.x).toBe(x+1)
 
+      it "invalid", ->
+        expect(-> $scope.player.move("nothing")).toThrow()
+
+    describe "capture", ->
+      it "arrow up", ->#{37:'left', 38:'up', 39:'right', 40:'down'}
+        $scope.keyPressed()
+
   describe "$scope.board", ->
     it "exits", ->
       expect($scope.board).toBeTruthy()
